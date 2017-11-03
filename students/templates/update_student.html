@@ -8,7 +8,7 @@
     <form method="post">
         {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-default">ویرایش</button>
+    <button class="btn btn-success">ویرایش</button>
     <a href="{% url 'students:list' %}" class="btn btn-danger"> بازگشت</a>
     </form>
 {% endblock %}
