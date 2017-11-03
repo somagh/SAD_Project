@@ -10,9 +10,10 @@
         <th>نام خانوادگی</th>
         <th>تاریخ تولد</th>
         <th>شماره شناسنامه</th>
+        <th></th>
         </thead>
         <tbody>
-        {% for student in object_list %}
+        {% for student in student_list %}
             <tr>
                 <td>
                     {{ student.first_name }}
@@ -28,7 +29,12 @@
                 </td>
                 <td>
                     <a class="btn btn-default"
-                       href=""> ویرایش اطلاعات دانشجو
+                       href="{% url 'students:update' student.pk %}"> ویرایش اطلاعات دانشجو
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger"
+                       href=""> حذف دانشجو
                     </a>
                 </td>
             </tr>

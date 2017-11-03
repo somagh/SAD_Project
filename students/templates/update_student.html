@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} ویرایش اطلاعات دانشجو {% endblock %}
+
+{% block content %}
+    <h2>ویرایش اطلاعات
+        {{ student.first_name }} {{ student.last_name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-default">ویرایش</button>
+    <a href="{% url 'students:list' %}" class="btn btn-danger"> بازگشت</a>
+    </form>
+{% endblock %}
