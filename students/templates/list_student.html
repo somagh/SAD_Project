@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} لیست دانشجویان {% endblock %}
+
+{% block content %}
+    <h2>لیست دانشجویان سامانه</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>نام</th>
+        <th>نام خانوادگی</th>
+        <th>تاریخ تولد</th>
+        <th>شماره شناسنامه</th>
+        </thead>
+        <tbody>
+        {% for student in object_list %}
+            <tr>
+                <td>
+                    {{ student.first_name }}
+                </td>
+                <td>
+                    {{ student.last_name }}
+                </td>
+                <td>
+                    {{ student.birth_date }}
+                </td>
+                <td>
+                    {{ student.national_code }}
+                </td>
+                <td>
+                    <a class="btn btn-default"
+                       href=""> ویرایش اطلاعات دانشجو
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'students:create'%}" class="btn btn-primary">
+اضافه کردن دانشجوی جدید
+    </a>
+{% endblock %}
