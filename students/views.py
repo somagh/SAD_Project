@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse
+from django.urls.base import reverse_lazy
 from django.views.generic import CreateView, FormView
 from django.views.generic import DeleteView
 from django.views.generic import ListView
@@ -12,7 +14,7 @@ from students.models import Student
 class StudentCreationView(SuccessMessageMixin, FormView):
     form_class = StudentForm
     template_name = 'create_student.html'
-    success_url = '/students/list'
+    success_url = reverse_lazy('people:student-list')
     success_message = "دانشجوی جدید با موفقیت در سامانه ثبت شد"
 
     def form_valid(self, form):
@@ -28,7 +30,7 @@ class StudentListView(ListView):
 class StudentUpdatingView(SuccessMessageMixin, FormView):
     form_class = StudentForm
     template_name = 'update_student.html'
-    success_url = '/students/list'
+    success_url = reverse_lazy('people:student-list')
     success_message = "اطلاعات دانشجو در سامانه با موفقیت تغییر کرد"
 
     def get_object(self):
@@ -44,7 +46,7 @@ class StudentUpdatingView(SuccessMessageMixin, FormView):
 
 class StudentDeleteView(SuccessMessageMixin, DeleteView):
     model = Student
-    success_url = '/students/list'
+    success_url = reverse_lazy('people:student-list')
     success_message = "دانشجو با موفقیت از سامانه حذف شد"
 
     def get(self, request, *args, **kwargs):
