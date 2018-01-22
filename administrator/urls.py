@@ -2,7 +2,8 @@ from django.conf.urls import url
 
 from administrator.views import StudentListView,  StudentDeleteView, \
     StudentUpdateView, EmployeeCreateView, EmployeeListView, StudentCreateView, EmployeeUpdateView, EmployeeDeleteView, \
-    PositionCreateView, PositionListView, PositionUpdateView, PositionDeleteView
+    PositionCreateView, PositionListView, PositionUpdateView, PositionDeleteView, ProcessCreateView, ProcessListView, \
+    ProcessUpdateView, ProcessDeleteView, StepCreateView, StepListView, StepUpdateView, StepDeleteView
 
 urlpatterns = [url(r'^student-new/', StudentCreateView.as_view(), name='student-create'),
                url(r'^student-list/', StudentListView.as_view(), name='student-list'),
@@ -16,4 +17,12 @@ urlpatterns = [url(r'^student-new/', StudentCreateView.as_view(), name='student-
                url(r'^position-list/', PositionListView.as_view(), name='position-list'),
                url(r'^position-update/(?P<pk>\d+)', PositionUpdateView.as_view(), name='position-update'),
                url(r'^position-delete/(?P<pk>\d+)', PositionDeleteView.as_view(), name='position-delete'),
+               url(r'^process-new/', ProcessCreateView.as_view(), name='process-create'),
+               url(r'^process-list/', ProcessListView.as_view(), name='process-list'),
+               url(r'^process-update/(?P<pk>\d+)', ProcessUpdateView.as_view(), name='process-update'),
+               url(r'^process-delete/(?P<pk>\d+)', ProcessDeleteView.as_view(), name='process-delete'),
+               url(r'^step-new/', StepCreateView.as_view(), name='step-create'),
+               url(r'^step-list/', StepListView.as_view(), name='step-list'),
+               url(r'^step-update/(?P<pk>\d+)', StepUpdateView.as_view(), name='step-update'),
+               url(r'^step-delete/(?P<pk>\d+)', StepDeleteView.as_view(), name='step-delete'),
                ]

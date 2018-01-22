@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from administrator.models import Student, Employee, Position
+from administrator.models import Student, Employee, Position, Process, Step
 
 
 class UserCreationForm(forms.Form):
@@ -118,4 +118,14 @@ class EmployeeForm(UserCreationForm):
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
+        fields = '__all__'
+
+class ProcessForm(forms.ModelForm):
+    class Meta:
+        model = Process
+        fields = '__all__'
+
+class StepForm(forms.ModelForm):
+    class Meta:
+        model = Step
         fields = '__all__'
