@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %} لیست گام‌ها {% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+        </p>
+        {% endfor %}
+    {% endif %}
+    <h2>لیست گام‌ها سامانه</h2>
+
+    {% if step_list %}
+    <table class="table table-hover table-striped">
+            name = models.CharField(max_length=100)
+    description = models.TextField()
+    has_payment = models.BooleanField()
+    needs_clarification = models.BooleanField()
+    process = models.ForeignKey(to=Process, related_name='steps')
+    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
+    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
+    position = models.ForeignKey(to=Position, related_name='steps')
+
+        <thead>
+        <th>فرآیند</th>
+        <th>نام</th>
+        <th>توضیحات</th>
+        <th>امکان پرداخت</th>
+        <th>امکان درخواست توضیح</th>
+        <th>سمت کارمند</th>
+        <th>گام بعدی (در صورت موفقیت)</th>
+        <th>گام بعدی (در صورت شکست)</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for step in step_list %}
+            <tr>
+                <td>
+                    {{ step.process }}
+                </td>
+                <td>
+                    {{ step.name }}
+                </td>
+                <td>
+                    {{ step.description }}
+                </td>
+                <td>
+                    {{ step.has_payment }}
+                </td>
+                <td>
+                    {{ step.needs_clarification }}
+                </td>
+                <td>
+                    {{ step.position }}
+                </td>
+                <td>
+                    {{ step.pass_step }}
+                </td>
+                <td>
+                    {{ step.fail_step }}
+                </td>
+                <td>
+                    <a class="btn btn-default"
+                       href="{% url 'admin:step-update' step.pk %}"> ویرایش اطلاعات گام
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger"
+                       href="{% url 'admin:step-delete' step.pk %}"> حذف گام
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+در حال حاضر گامی در سامانه ثبت نشده‌است.
+        <br/>
+        <br/>
+    {% endif %}
+    <a href="{% url 'admin:step-create'%}" class="btn btn-primary">
+اضافه کردن گام جدید
+    </a>
+{% endblock %}

@@ -26,6 +26,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = 'دانشجو'
 
+
 class Employee(models.Model):
     user = models.OneToOneField(to=User)
     position = models.ForeignKey(to='Position')
@@ -48,6 +49,7 @@ class Employee(models.Model):
 
     class Meta:
         verbose_name = 'کارمند دون‌پایه'
+
 
 class Position(models.Model):
     name = models.CharField(max_length=40, verbose_name='نام')

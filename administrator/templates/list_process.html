@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} لیست فرایند‌ها {% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+        </p>
+        {% endfor %}
+    {% endif %}
+    <h2>لیست فرایندهای سامانه</h2>
+
+    {% if process_list %}
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>نام</th>
+        <th>اولین گام</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for process in process_list %}
+            <tr>
+                <td>
+                    {{ process.name }}
+                </td>
+                <td>
+                    {{ process.first_step }}
+                </td>
+                <td>
+                    <a class="btn btn-default"
+                       href="{% url 'admin:process-update' process.pk %}"> ویرایش اطلاعات فرایند
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger"
+                       href="{% url 'admin:process-delete' process.pk %}"> حذف فرایند
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        در حال حاضر فرایندی در سامانه ثبت نشده است.
+        <br/>
+        <br/>
+    {% endif %}
+    <a href="{% url 'admin:process-create'%}" class="btn btn-primary">
+اضافه کردن فرایند جدید
+    </a>
+{% endblock %}
