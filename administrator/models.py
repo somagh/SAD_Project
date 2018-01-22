@@ -50,3 +50,25 @@ class Position(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Process(models.Model):
+    name = models.CharField(max_length=100)
+    first_step = models.ForeignKey(to='Step', related_name='+')
+
+    def __str__(self):
+        return self.name
+
+
+class Step(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    has_payment = models.BooleanField()
+    needs_clarification = models.BooleanField()
+    process = models.ForeignKey(to=Process, related_name='steps')
+    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
+    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
+    position = models.ForeignKey(to=Position, related_name='steps')
+
+    def __str__(self):
+        return self.name
