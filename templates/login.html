@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+{% endblock %}
+{% block content %}
+    <div class="jumbotron col-md-6 col-md-offset-3 col-sm-offset-2 col-sm-8 col-xs-10 col-xs-offset-1 img-rounded"
+         style="margin-top: 100px;padding-top: 20px;">
+        <h3 align="center">به سامانه فارغ التحصیلی خوش آمدید</h3>
+        <br>
+        <form method="post" class="form-horizontal">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger alert-dismissable fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    نام یا رمز عبور اشتباه وارد شده است.
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label class="control-label col-xs-3" for="id_username">نام کاربری</label>
+                <div class="col-sm-8 col-xs-9">{{ form.username }}</div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-3" for="id_password">گذرواژه</label>
+                <div class="col-sm-8 col-xs-9">{{ form.password }}</div>
+            </div>
+            <button class="col-xs-offset-5 btn btn-primary" type="submit">ورود</button>
+        </form>
+    </div>
+{% endblock %}
