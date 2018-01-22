@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} لیست دانشجویان {% endblock %}
+{% block title %} لیست کارمندان دون‌پایه {% endblock %}
 
 {% block content %}
     {% if messages %}
@@ -11,45 +11,45 @@
         </p>
         {% endfor %}
     {% endif %}
-    <h2>لیست دانشجویان سامانه</h2>
+    <h2>لیست کارمندان دون‌پایه سامانه</h2>
 
-    {% if student_list %}
+    {% if employee_list %}
     <table class="table table-hover table-striped">
         <thead>
         <th>نام</th>
         <th>نام خانوادگی</th>
         <th>نام کاربری</th>
-        <th>شماره دانشجویی</th>
+        <th>سمت</th>
         <th>ایمیل</th>
         <th></th>
         <th></th>
         </thead>
         <tbody>
-        {% for student in student_list %}
+        {% for employee in employee_list %}
             <tr>
                 <td>
-                    {{ student.first_name }}
+                    {{ employee.first_name }}
                 </td>
                 <td>
-                    {{ student.last_name }}
+                    {{ employee.last_name }}
                 </td>
                 <td>
-                    {{ student.username }}
+                    {{ employee.username }}
                 </td>
                 <td>
-                    {{ student.studentID }}
+                    {{ employee.position.name }}
                 </td>
                 <td>
-                    {{ student.email }}
+                    {{ employee.email }}
                 </td>
                 <td>
                     <a class="btn btn-default"
-                       href="{% url 'people:student-update' student.pk %}"> ویرایش اطلاعات دانشجو
+                       href="{% url 'people:employee-update' employee.pk %}"> ویرایش اطلاعات کارمند دون‌پایه
                     </a>
                 </td>
                 <td>
                     <a class="btn btn-danger"
-                       href="{% url 'people:student-delete' student.pk %}"> حذف دانشجو
+                       href="{% url 'people:employee-delete' employee.pk %}"> حذف کارمند دون‌پایه
                     </a>
                 </td>
             </tr>
@@ -57,11 +57,11 @@
         </tbody>
     </table>
     {% else %}
-        در حال حاضر دانشجویی در سامانه ثبت نشده است.
+        در حال حاضر کارمند دون‌پایه‌ای در سامانه ثبت نشده است.
         <br/>
         <br/>
     {% endif %}
-    <a href="{% url 'people:student-create'%}" class="btn btn-primary">
-اضافه کردن دانشجوی جدید
+    <a href="{% url 'people:employee-create'%}" class="btn btn-primary">
+اضافه کردن کارمند دون‌پایه جدید
     </a>
 {% endblock %}

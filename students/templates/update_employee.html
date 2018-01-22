@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} ویرایش اطلاعات کارمند دون‌پایه {% endblock %}
+
+{% block content %}
+    <h2>ویرایش اطلاعات
+        {{ employee.first_name }} {{ employee.last_name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-success">ویرایش</button>
+    <a href="{% url 'people:employee-list' %}" class="btn btn-danger"> بازگشت</a>
+    </form>
+{% endblock %}
