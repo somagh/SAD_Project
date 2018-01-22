@@ -8,6 +8,9 @@ class Student(models.Model):
     user = models.OneToOneField(to=User, on_delete=CASCADE)
     studentID = models.CharField(max_length=12, primary_key=True)
 
+    def __str__(self):
+        return '{} {} {}'.format(self.studentID, self.first_name, self.last_name)
+
     @property
     def first_name(self):
         return self.user.first_name
@@ -47,6 +50,15 @@ class Employee(models.Model):
     @property
     def username(self):
         return self.user.username
+
+    def get_related_step_instances(self):
+        from student.models import StepInstance, Status
+
+        out = []
+        for step_instance in StepInstance.objects.all():
+            if step_instance.status == Status.PENDING and step_instance.position == self.position:
+                out += [step_instance]
+        return out
 
     class Meta:
         verbose_name = 'کارمند دون‌پایه'
@@ -98,6 +110,8 @@ class Step(models.Model):
 
     def clean(self):
         if self.pass_step and self.pass_step.process != self.process:
-            raise ValidationError({'pass_step': 'گام بعدی (در صورت موفقیت) باید از گام‌های همین فرایند باشد'})
+            raise ValidationError(
+                {'pass_step': 'گام بعدی (در صورت موفقیت) باید از گام‌های همین فرایند باشد'})
         if self.fail_step and self.fail_step.process != self.process:
-            raise ValidationError({'fail_step': 'گام بعدی (در صورت شکست) باید از گام‌های همین فرایند باشد'})
+            raise ValidationError(
+                {'fail_step': 'گام بعدی (در صورت شکست) باید از گام‌های همین فرایند باشد'})

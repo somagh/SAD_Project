@@ -21,6 +21,7 @@ from SAD_Project.views import HomeView
 urlpatterns = [
     url(r'^admin/', include('administrator.urls', namespace='admin')),
     url(r'^student/', include('student.urls', namespace='student')),
+    url(r'^employee/', include('employee.urls', namespace='employee')),
     url(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^home/$',HomeView.as_view(),name='home')

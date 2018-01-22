@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic import FormView, DeleteView
 from django.views.generic import ListView
 
-from administrator.mixins import AdminRequiredMixin
+from SAD_Project.mixins import AdminRequiredMixin
 
 
 class GeneralCreateView(AdminRequiredMixin,SuccessMessageMixin, FormView):

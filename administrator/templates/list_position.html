@@ -3,14 +3,6 @@
 {% block title %} لیست سمت‌ها {% endblock %}
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-        <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ message }}
-        </p>
-        {% endfor %}
-    {% endif %}
     <h2>لیست سمت‌های سامانه</h2>
 
     {% if position_list %}

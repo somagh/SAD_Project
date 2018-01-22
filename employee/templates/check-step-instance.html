@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} بررسی گام {% endblock %}
+
+{% block content %}
+    <h2>اطلاعات کلی</h2>
+
+    <ul>
+        <li>نام گام:
+            {{ step_instance.step.name }}
+        </li>
+        <li>توضیح گام:
+            {{ step_instance.step.description }}
+        </li>
+        <li>فرآیند:
+            {{ step_instance.process }}
+        </li>
+        <li>اطلاعات دانشجو:
+            {{ step_instance.student }}
+        </li>
+    </ul>
+    <h2> تاریخچه عملیات گذشته</h2>
+
+    <ol>
+    {% for action in step_instance.actions.all %}
+        <li>{{action.date}}</li>
+    {% empty %}
+        <h4>عملیاتی وجود ندارد</h4>
+    {% endfor %}
+    </ol>
+
+    <a class="btn btn-success" href="{% url 'employee:check-step-instance' step_instance.pk %}">تایید</a>
+
+    <a class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">رد</a>
+
+    {% if step_instance.step.has_payment %}
+        <a class="btn btn-warning" href="{% url 'employee:check-step-instance' step_instance.pk %}">اعلام خطا با پرداخت</a>
+    {% endif %}
+
+
+    {% if step_instance.step.needs_clarification %}
+        <a class="btn btn-warning" href="{% url 'employee:check-step-instance' step_instance.pk %}">اعلام خطا با درخواست توضیحات</a>
+    {% endif %}
+
+{% endblock %}
