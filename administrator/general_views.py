@@ -2,9 +2,12 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.views.generic import FormView, DeleteView
+from django.views.generic import ListView
+
+from administrator.mixins import AdminRequiredMixin
 
 
-class GeneralCreateView(SuccessMessageMixin, FormView):
+class GeneralCreateView(AdminRequiredMixin,SuccessMessageMixin, FormView):
     template_name = 'create_update.html'
     form_class = None
 
@@ -47,7 +50,7 @@ class GeneralUpdateView(GeneralCreateView):
         return context
 
 
-class GeneralDeleteView(SuccessMessageMixin, DeleteView):
+class GeneralDeleteView(AdminRequiredMixin,SuccessMessageMixin, DeleteView):
     model = None
 
     def get(self, request, *args, **kwargs):
@@ -60,3 +63,12 @@ class GeneralDeleteView(SuccessMessageMixin, DeleteView):
         success_message = self.model._meta.verbose_name + ' با موفقیت از سامانه حذف شد.'
         messages.success(self.request, success_message)
         return super().delete(request, *args, **kwargs)
+
+class GeneralListView(AdminRequiredMixin,ListView):
+    model = None
+    def get_template_names(self):
+        return 'list_{}.html'.format(self.model.__name__.lower())
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model._meta.verbose_name
+        return context

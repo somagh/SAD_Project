@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 from administrator.forms import StudentForm, EmployeeForm, PositionForm, ProcessForm, StepForm
-from administrator.general_views import GeneralCreateView, GeneralUpdateView, GeneralDeleteView
+from administrator.general_views import GeneralCreateView, GeneralUpdateView, GeneralDeleteView, GeneralListView
 from administrator.models import Student, Employee, Position, Step, Process
 
 
@@ -8,9 +8,8 @@ class StudentCreateView(GeneralCreateView):
     form_class = StudentForm
 
 
-class StudentListView(ListView):
+class StudentListView(GeneralListView):
     model = Student
-    template_name = 'list_student.html'
 
 
 class StudentUpdateView(GeneralUpdateView):
@@ -22,7 +21,6 @@ class StudentDeleteView(GeneralDeleteView):
 
 
 class EmployeeCreateView(GeneralCreateView):
-    model = Employee
     form_class = EmployeeForm
 
 
@@ -30,9 +28,8 @@ class EmployeeUpdateView(GeneralUpdateView):
     form_class = EmployeeForm
 
 
-class EmployeeListView(ListView):
+class EmployeeListView(GeneralListView):
     model = Employee
-    template_name = 'list_employee.html'
 
 
 class EmployeeDeleteView(GeneralDeleteView):
@@ -47,9 +44,8 @@ class PositionUpdateView(GeneralUpdateView):
     form_class = PositionForm
 
 
-class PositionListView(ListView):
+class PositionListView(GeneralListView):
     model = Position
-    template_name = 'list_position.html'
 
 
 class PositionDeleteView(GeneralDeleteView):
@@ -64,9 +60,8 @@ class StepUpdateView(GeneralUpdateView):
     form_class = StepForm
 
 
-class StepListView(ListView):
+class StepListView(GeneralListView):
     model = Step
-    template_name = 'list_step.html'
 
 
 class StepDeleteView(GeneralDeleteView):
@@ -81,9 +76,8 @@ class ProcessUpdateView(GeneralUpdateView):
     form_class = ProcessForm
 
 
-class ProcessListView(ListView):
+class ProcessListView(GeneralListView):
     model = Process
-    template_name = 'list_process.html'
 
 
 class ProcessDeleteView(GeneralDeleteView):
