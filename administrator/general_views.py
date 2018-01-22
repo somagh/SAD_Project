@@ -37,7 +37,6 @@ class GeneralUpdateView(GeneralCreateView):
     def get_form_kwargs(self):
         return {**{'instance': self.get_object()}, **super().get_form_kwargs()}
 
-
     def get_success_message(self, cleaned_data):
         return 'اطلاعات '+ self.model._meta.verbose_name + ' با موفقیت تغییر کرد.'
 

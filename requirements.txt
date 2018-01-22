@@ -1,2 +1,4 @@
 Django==1.11.7
 pytz==2017.3
+django_enumfields==0.9.0
+django_polymorphic==2.0
