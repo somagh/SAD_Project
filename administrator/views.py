@@ -66,7 +66,7 @@ class StepUpdateView(GeneralUpdateView):
 
 class StepListView(ListView):
     model = Step
-    template_engine = 'list_process.html'
+    template_name = 'list_step.html'
 
 
 class StepDeleteView(GeneralDeleteView):

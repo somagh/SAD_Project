@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
@@ -62,8 +63,9 @@ class Position(models.Model):
 
 
 class Process(models.Model):
-    name = models.CharField(max_length=100,verbose_name='نام')
-    first_step = models.ForeignKey(to='Step', related_name='+',verbose_name='گام اولیه',blank=True,null=True)
+    name = models.CharField(max_length=100, verbose_name='نام')
+    first_step = models.ForeignKey(to='Step', related_name='+', verbose_name='گام اولیه',
+                                   blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -71,19 +73,31 @@ class Process(models.Model):
     class Meta:
         verbose_name = 'فرایند'
 
+    def clean(self):
+        if self.first_step and self.first_step.process != self:
+            raise ValidationError({'first_step': 'گام اولیه باید از گام‌های همین فرایند باشد'})
+
 
 class Step(models.Model):
+    process = models.ForeignKey(to=Process, related_name='steps', verbose_name='فرایند')
     name = models.CharField(max_length=100, verbose_name='نام')
-    description = models.TextField(verbose_name='نام')
+    description = models.TextField(verbose_name='توضیحات')
     has_payment = models.BooleanField(verbose_name='امکان پرداخت')
     needs_clarification = models.BooleanField(verbose_name='امکان درخواست توضیح')
-    process = models.ForeignKey(to=Process, related_name='steps',verbose_name='فرایند')
-    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',verbose_name='گام بعدی در صورت موفقیت')
-    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',verbose_name='گام بعدی در صورت شکست')
-    position = models.ForeignKey(to=Position, related_name='steps',verbose_name='سمت مربوطه')
+    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',
+                                  verbose_name='گام بعدی در صورت موفقیت')
+    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',
+                                  verbose_name='گام بعدی در صورت شکست')
+    position = models.ForeignKey(to=Position, related_name='steps', verbose_name='سمت مربوطه')
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'گام'
+
+    def clean(self):
+        if self.pass_step and self.pass_step.process != self.process:
+            raise ValidationError({'pass_step': 'گام بعدی (در صورت موفقیت) باید از گام‌های همین فرایند باشد'})
+        if self.fail_step and self.fail_step.process != self.process:
+            raise ValidationError({'fail_step': 'گام بعدی (در صورت شکست) باید از گام‌های همین فرایند باشد'})

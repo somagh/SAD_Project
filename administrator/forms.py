@@ -120,10 +120,12 @@ class PositionForm(forms.ModelForm):
         model = Position
         fields = '__all__'
 
+
 class ProcessForm(forms.ModelForm):
     class Meta:
         model = Process
         fields = '__all__'
+
 
 class StepForm(forms.ModelForm):
     class Meta:
