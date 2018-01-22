@@ -126,6 +126,11 @@ class ProcessForm(forms.ModelForm):
         model = Process
         fields = '__all__'
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.instance.pk:
+            self.fields['first_step'].queryset = self.instance.steps.all()
+
 
 class StepForm(forms.ModelForm):
     class Meta:
