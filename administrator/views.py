@@ -12,13 +12,20 @@ from administrator.models import Student, Employee, Position
 
 class StudentCreateView(SuccessMessageMixin, FormView):
     form_class = StudentForm
-    template_name = 'create_student.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:student-list')
     success_message = "دانشجوی جدید با موفقیت در سامانه ثبت شد"
 
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'اضافه کردن'
+        context['model_name'] = 'دانشجو'
+        context['back_url'] = self.success_url
+        return context
 
 
 class StudentListView(ListView):
@@ -28,7 +35,7 @@ class StudentListView(ListView):
 
 class StudentUpdateView(SuccessMessageMixin, FormView):
     form_class = StudentForm
-    template_name = 'update_student.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:student-list')
     success_message = "اطلاعات دانشجو در سامانه با موفقیت تغییر کرد"
 
@@ -41,6 +48,13 @@ class StudentUpdateView(SuccessMessageMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'ویرایش'
+        context['model_name'] = 'دانشجو'
+        context['back_url'] = self.success_url
+        return context
 
 
 class StudentDeleteView(SuccessMessageMixin, DeleteView):
@@ -55,9 +69,10 @@ class StudentDeleteView(SuccessMessageMixin, DeleteView):
         messages.success(self.request, self.success_message)
         return super().delete(request, *args, **kwargs)
 
+
 class EmployeeCreateView(SuccessMessageMixin, FormView):
     form_class = EmployeeForm
-    template_name = 'create_employee.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:employee-list')
     success_message = "کارمند دون پایه جدید با موفقیت در سامانه ثبت شد"
 
@@ -65,10 +80,17 @@ class EmployeeCreateView(SuccessMessageMixin, FormView):
         form.save()
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'اضافه کردن'
+        context['model_name'] = 'کارمند دون‌پایه'
+        context['back_url'] = self.success_url
+        return context
+
 
 class EmployeeUpdateView(SuccessMessageMixin, FormView):
     form_class = EmployeeForm
-    template_name = 'update_employee.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:employee-list')
     success_message = "اطلاعات کارمند دون پایه در سامانه با موفقیت تغییر کرد"
 
@@ -82,10 +104,18 @@ class EmployeeUpdateView(SuccessMessageMixin, FormView):
         form.save()
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'ویرایش'
+        context['model_name'] = 'کارمند دون‌پایه'
+        context['back_url'] = self.success_url
+        return context
+
 
 class EmployeeListView(ListView):
     model = Employee
     template_name = 'list_employee.html'
+
 
 class EmployeeDeleteView(SuccessMessageMixin, DeleteView):
     model = Employee
@@ -103,17 +133,31 @@ class EmployeeDeleteView(SuccessMessageMixin, DeleteView):
 class PositionCreateView(SuccessMessageMixin, CreateView):
     model = Position
     fields = '__all__'
-    template_name = 'create_position.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:position-list')
     success_message = "سمت جدید با موفقیت در سامانه ثبت شد"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'اضافه کردن'
+        context['model_name'] = 'سمت'
+        context['back_url'] = self.success_url
+        return context
 
 
 class PositionUpdateView(SuccessMessageMixin, UpdateView):
     model = Position
     fields = '__all__'
-    template_name = 'update_position.html'
+    template_name = 'create_update.html'
     success_url = reverse_lazy('admin:position-list')
     success_message = "اطلاعات سمت در سامانه با موفقیت تغییر کرد"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'ویرایش'
+        context['model_name'] = 'سمت'
+        context['back_url'] = self.success_url
+        return context
 
 
 class PositionListView(ListView):
