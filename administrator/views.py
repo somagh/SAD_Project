@@ -1,7 +1,7 @@
 from django.views.generic import ListView
 from administrator.forms import StudentForm, EmployeeForm, PositionForm
 from administrator.general_views import GeneralCreateView, GeneralUpdateView, GeneralDeleteView
-from administrator.models import Student, Employee, Position, Step
+from administrator.models import Student, Employee, Position, Step, Process
 
 
 class StudentCreateView(GeneralCreateView):
@@ -54,3 +54,13 @@ class PositionListView(ListView):
 
 class PositionDeleteView(GeneralDeleteView):
     model = Position
+
+
+class StepListView(ListView):
+    model = Step
+    template_engine = 'list_process.html'
+
+
+class ProcessListView(ListView):
+    model = Process
+    template_name = 'list_process.html'
