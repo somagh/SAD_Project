@@ -28,6 +28,25 @@ class Employee(models.Model):
     user = models.OneToOneField(to=User)
     position = models.ForeignKey(to='Position')
 
+    @property
+    def first_name(self):
+        return self.user.first_name
+
+    @property
+    def last_name(self):
+        return self.user.last_name
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def username(self):
+        return self.user.username
+
+
 
 class Position(models.Model):
     name = models.CharField(max_length=40)
+    def __str__(self):
+        return self.name

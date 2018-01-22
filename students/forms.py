@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from students.models import Student
+from students.models import Student, Employee, Position
 
 
 class UserCreationForm(forms.Form):
@@ -76,6 +76,29 @@ class StudentForm(UserCreationForm):
         user = super().save()
         if not self.instance:
             return Student.objects.create(user=user, studentID=self.cleaned_data['studentID'])
+        else:
+            self.instance.user = user
+            self.instance.save()
+            return self.instance
+
+class EmployeeForm(UserCreationForm):
+    position = forms.ModelChoiceField(queryset=Position.objects.all(),label="سمت")
+
+    def get_username(self):
+        return 'employee_' + str(Employee.objects.last().pk+1 if Employee.objects.last() else 1)
+
+    def __init__(self, instance=None, **kwargs):
+        self.instance = instance
+        if instance:
+            super().__init__(instance.user, **kwargs)
+            self.fields['position'].initial = instance.position
+        else:
+            super().__init__(**kwargs)
+
+    def save(self):
+        user = super().save()
+        if not self.instance:
+            return Employee.objects.create(user=user, position=self.cleaned_data['position'])
         else:
             self.instance.user = user
             self.instance.save()
