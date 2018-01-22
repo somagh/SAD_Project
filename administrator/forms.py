@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from docutils.utils.math.math2html import Position
 
-from students.models import Student, Employee, Position
+from administrator.models import Student, Employee, Position
 
 
 class UserCreationForm(forms.Form):

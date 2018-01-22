@@ -8,6 +8,6 @@
         {% csrf_token %}
     {{ form.as_p }}
     <button class="btn btn-success">ثبت سمت</button>
-    <a href="{% url 'people:position-list' %}" class="btn btn-danger"> بازگشت</a>
+    <a href="{% url 'admin:position-list' %}" class="btn btn-danger"> بازگشت</a>
     </form>
 {% endblock %}

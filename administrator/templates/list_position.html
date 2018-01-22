@@ -28,12 +28,12 @@
                 </td>
                 <td>
                     <a class="btn btn-default"
-                       href="{% url 'people:position-update' position.pk %}"> ویرایش سمت
+                       href="{% url 'admin:position-update' position.pk %}"> ویرایش سمت
                     </a>
                 </td>
                 <td>
                     <a class="btn btn-danger"
-                       href="{% url 'people:position-delete' position.pk %}"> حذف سمت
+                       href="{% url 'admin:position-delete' position.pk %}"> حذف سمت
                     </a>
                 </td>
             </tr>
@@ -45,7 +45,7 @@
         <br/>
         <br/>
     {% endif %}
-    <a href="{% url 'people:position-create'%}" class="btn btn-primary">
+    <a href="{% url 'admin:position-create'%}" class="btn btn-primary">
 اضافه کردن سمت جدید
     </a>
 {% endblock %}

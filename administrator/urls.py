@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from students.views import StudentListView,  StudentDeleteView, \
+from administrator.views import StudentListView,  StudentDeleteView, \
     StudentUpdateView, EmployeeCreateView, EmployeeListView, StudentCreateView, EmployeeUpdateView, EmployeeDeleteView, \
     PositionCreateView, PositionListView, PositionUpdateView, PositionDeleteView
 
