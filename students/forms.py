@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from docutils.utils.math.math2html import Position
 
 from students.models import Student, Employee, Position
 
@@ -14,20 +15,20 @@ class UserCreationForm(forms.Form):
     def get_username(self):
         raise NotImplementedError
 
-    def __init__(self, instance=None, **kwargs):
+    def __init__(self, user=None, **kwargs):
         super().__init__(**kwargs)
-        self.instance = instance
-        if instance:
-            self.fields['first_name'].initial = instance.first_name
-            self.fields['last_name'].initial = instance.last_name
-            self.fields['email'].initial = instance.email
+        self.user = user
+        if user:
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+            self.fields['email'].initial = user.email
             self.fields['password'].required = False
             self.fields['password_repeated'].required = False
 
     def clean(self):
         data = super().clean()
         data['username'] = self.get_username()
-        if not self.instance:
+        if not self.user:
             if User.objects.filter(username=data['username']).exists():
                 self.add_error(None, 'این نام کاربری قبلا گرفته شده است')
         if data['password'] != data['password_repeated']:
@@ -36,18 +37,20 @@ class UserCreationForm(forms.Form):
 
     def save(self):
         data = self.cleaned_data
-        if not self.instance:
-            user = User.objects.create_user(data['username'], email=data['email'], password=data['password'],
-                                 first_name=data['first_name'], last_name=data['last_name'])
+        if not self.user:
+            user = User.objects.create_user(data['username'], email=data['email'],
+                                            password=data['password'],
+                                            first_name=data['first_name'],
+                                            last_name=data['last_name'])
             return user
         else:
-            self.instance.email = data['email']
-            self.instance.first_name = data['first_name']
-            self.instance.last_name = data['last_name']
+            self.user.email = data['email']
+            self.user.first_name = data['first_name']
+            self.user.last_name = data['last_name']
             if data['password']:
-                self.instance.set_password(data['password'])
-            self.instance.save()
-            return self.instance
+                self.user.set_password(data['password'])
+            self.user.save()
+            return self.user
 
 
 class StudentForm(UserCreationForm):
@@ -56,50 +59,52 @@ class StudentForm(UserCreationForm):
     def get_username(self):
         return 'student_' + self.data['studentID']
 
-    def __init__(self, instance=None, **kwargs):
-        self.instance = instance
-        if instance:
-            super().__init__(instance.user, **kwargs)
-            self.fields['studentID'].initial = instance.studentID
+    def __init__(self, student=None, **kwargs):
+        self.student = student
+        if student:
+            super().__init__(student.user, **kwargs)
+            self.fields['studentID'].initial = student.studentID
             self.fields['studentID'].widget.attrs['readonly'] = True
         else:
             super().__init__(**kwargs)
 
     def clean(self):
         data = super().clean()
-        if not self.instance:
+        if not self.student:
             if Student.objects.filter(studentID=data['studentID']).exists():
                 self.add_error('studentID', 'این شماره دانشجویی قبلا گرفته شده است')
         return data
 
     def save(self):
         user = super().save()
-        if not self.instance:
+        if not self.student:
             return Student.objects.create(user=user, studentID=self.cleaned_data['studentID'])
         else:
-            self.instance.user = user
-            self.instance.save()
-            return self.instance
+            self.student.user = user
+            self.student.save()
+            return self.student
+
 
 class EmployeeForm(UserCreationForm):
-    position = forms.ModelChoiceField(queryset=Position.objects.all(),label="سمت")
+    position = forms.ModelChoiceField(queryset=Position.objects.all(), label="سمت")
 
     def get_username(self):
-        return 'employee_' + str(Employee.objects.last().pk+1 if Employee.objects.last() else 1)
+        return 'employee_' + str(Employee.objects.last().pk + 1 if Employee.objects.last() else 1)
 
-    def __init__(self, instance=None, **kwargs):
-        self.instance = instance
-        if instance:
-            super().__init__(instance.user, **kwargs)
-            self.fields['position'].initial = instance.position
+    def __init__(self, employee=None, **kwargs):
+        self.employee = employee
+        if employee:
+            super().__init__(employee.user, **kwargs)
+            self.fields['position'].initial = employee.position
         else:
             super().__init__(**kwargs)
 
     def save(self):
         user = super().save()
-        if not self.instance:
+        if not self.employee:
             return Employee.objects.create(user=user, position=self.cleaned_data['position'])
         else:
-            self.instance.user = user
-            self.instance.save()
-            return self.instance
+            self.employee.user = user
+            self.employee.position = self.cleaned_data['position']
+            self.employee.save()
+            return self.employee

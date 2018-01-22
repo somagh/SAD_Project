@@ -6,9 +6,8 @@ from django.views.generic import CreateView, FormView
 from django.views.generic import DeleteView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
-
 from students.forms import StudentForm, EmployeeForm
-from students.models import Student, Employee
+from students.models import Student, Employee, Position
 
 
 class StudentCreateView(SuccessMessageMixin, FormView):
@@ -37,7 +36,7 @@ class StudentUpdateView(SuccessMessageMixin, FormView):
         return Student.objects.get(pk=self.kwargs['pk'])
 
     def get_form_kwargs(self):
-        return {**{'instance': self.get_object()}, **super().get_form_kwargs()}
+        return {**{'student': self.get_object()}, **super().get_form_kwargs()}
 
     def form_valid(self, form):
         form.save()
@@ -54,7 +53,7 @@ class StudentDeleteView(SuccessMessageMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
-        return super(StudentDeleteView, self).delete(request, *args, **kwargs)
+        return super().delete(request, *args, **kwargs)
 
 class EmployeeCreateView(SuccessMessageMixin, FormView):
     form_class = EmployeeForm
@@ -77,7 +76,7 @@ class EmployeeUpdateView(SuccessMessageMixin, FormView):
         return Employee.objects.get(pk=self.kwargs['pk'])
 
     def get_form_kwargs(self):
-        return {**{'instance': self.get_object()}, **super().get_form_kwargs()}
+        return {**{'employee': self.get_object()}, **super().get_form_kwargs()}
 
     def form_valid(self, form):
         form.save()
@@ -98,5 +97,38 @@ class EmployeeDeleteView(SuccessMessageMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
-        return super(EmployeeDeleteView, self).delete(request, *args, **kwargs)
+        return super().delete(request, *args, **kwargs)
 
+
+class PositionCreateView(SuccessMessageMixin, CreateView):
+    model = Position
+    fields = '__all__'
+    template_name = 'create_position.html'
+    success_url = reverse_lazy('people:position-list')
+    success_message = "سمت جدید با موفقیت در سامانه ثبت شد"
+
+
+class PositionUpdateView(SuccessMessageMixin, UpdateView):
+    model = Position
+    fields = '__all__'
+    template_name = 'update_position.html'
+    success_url = reverse_lazy('people:position-list')
+    success_message = "اطلاعات سمت در سامانه با موفقیت تغییر کرد"
+
+
+class PositionListView(ListView):
+    model = Position
+    template_name = 'list_position.html'
+
+
+class PositionDeleteView(SuccessMessageMixin, DeleteView):
+    model = Position
+    success_url = reverse_lazy('people:position-list')
+    success_message = "سمت با موفقیت از سامانه حذف شد"
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)

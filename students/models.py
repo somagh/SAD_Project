@@ -45,8 +45,8 @@ class Employee(models.Model):
         return self.user.username
 
 
-
 class Position(models.Model):
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, verbose_name='نام')
+
     def __str__(self):
         return self.name

@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from students.views import StudentListView,  StudentDeleteView, \
-    StudentUpdateView, EmployeeCreateView, EmployeeListView, StudentCreateView, EmployeeUpdateView, EmployeeDeleteView
+    StudentUpdateView, EmployeeCreateView, EmployeeListView, StudentCreateView, EmployeeUpdateView, EmployeeDeleteView, \
+    PositionCreateView, PositionListView, PositionUpdateView, PositionDeleteView
 
 urlpatterns = [url(r'^student-new/', StudentCreateView.as_view(), name='student-create'),
                url(r'^student-list/', StudentListView.as_view(), name='student-list'),
@@ -11,4 +12,8 @@ urlpatterns = [url(r'^student-new/', StudentCreateView.as_view(), name='student-
                url(r'^employee-list/', EmployeeListView.as_view(), name='employee-list'),
                url(r'^employee-update/(?P<pk>\d+)', EmployeeUpdateView.as_view(), name='employee-update'),
                url(r'^employee-delete/(?P<pk>\d+)', EmployeeDeleteView.as_view(), name='employee-delete'),
+               url(r'^position-new/', PositionCreateView.as_view(), name='position-create'),
+               url(r'^position-list/', PositionListView.as_view(), name='position-list'),
+               url(r'^position-update/(?P<pk>\d+)', PositionUpdateView.as_view(), name='position-update'),
+               url(r'^position-delete/(?P<pk>\d+)', PositionDeleteView.as_view(), name='position-delete'),
                ]

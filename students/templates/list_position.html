@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} لیست سمت‌ها {% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <p class="alert alert-dismissable {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+        </p>
+        {% endfor %}
+    {% endif %}
+    <h2>لیست سمت‌های سامانه</h2>
+
+    {% if position_list %}
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>نام</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for position in position_list %}
+            <tr>
+                <td>
+                    {{ position.name }}
+                </td>
+                <td>
+                    <a class="btn btn-default"
+                       href="{% url 'people:position-update' position.pk %}"> ویرایش سمت
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-danger"
+                       href="{% url 'people:position-delete' position.pk %}"> حذف سمت
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        در حال حاضر سمتی در سامانه ثبت نشده است.
+        <br/>
+        <br/>
+    {% endif %}
+    <a href="{% url 'people:position-create'%}" class="btn btn-primary">
+اضافه کردن سمت جدید
+    </a>
+{% endblock %}
