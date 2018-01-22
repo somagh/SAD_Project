@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-from administrator.forms import StudentForm, EmployeeForm, PositionForm
+from administrator.forms import StudentForm, EmployeeForm, PositionForm, ProcessForm, StepForm
 from administrator.general_views import GeneralCreateView, GeneralUpdateView, GeneralDeleteView
 from administrator.models import Student, Employee, Position, Step, Process
 
@@ -56,11 +56,35 @@ class PositionDeleteView(GeneralDeleteView):
     model = Position
 
 
+class StepCreateView(GeneralCreateView):
+    form_class = StepForm
+
+
+class StepUpdateView(GeneralUpdateView):
+    form_class = StepForm
+
+
 class StepListView(ListView):
     model = Step
     template_engine = 'list_process.html'
 
 
+class StepDeleteView(GeneralDeleteView):
+    model = Step
+
+
+class ProcessCreateView(GeneralCreateView):
+    form_class = ProcessForm
+
+
+class ProcessUpdateView(GeneralUpdateView):
+    form_class = ProcessForm
+
+
 class ProcessListView(ListView):
     model = Process
     template_name = 'list_process.html'
+
+
+class ProcessDeleteView(GeneralDeleteView):
+    model = Process
