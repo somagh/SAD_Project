@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from docutils.utils.math.math2html import Position
 
 from administrator.models import Student, Employee, Position
 
@@ -59,11 +58,11 @@ class StudentForm(UserCreationForm):
     def get_username(self):
         return 'student_' + self.data['studentID']
 
-    def __init__(self, student=None, **kwargs):
-        self.student = student
-        if student:
-            super().__init__(student.user, **kwargs)
-            self.fields['studentID'].initial = student.studentID
+    def __init__(self, instance=None, **kwargs):
+        self.student = instance
+        if self.student:
+            super().__init__(self.student.user, **kwargs)
+            self.fields['studentID'].initial = self.student.studentID
             self.fields['studentID'].widget.attrs['readonly'] = True
         else:
             super().__init__(**kwargs)
@@ -84,6 +83,9 @@ class StudentForm(UserCreationForm):
             self.student.save()
             return self.student
 
+    class Meta:
+        model = Student
+
 
 class EmployeeForm(UserCreationForm):
     position = forms.ModelChoiceField(queryset=Position.objects.all(), label="سمت")
@@ -91,11 +93,11 @@ class EmployeeForm(UserCreationForm):
     def get_username(self):
         return 'employee_' + str(Employee.objects.last().pk + 1 if Employee.objects.last() else 1)
 
-    def __init__(self, employee=None, **kwargs):
-        self.employee = employee
-        if employee:
-            super().__init__(employee.user, **kwargs)
-            self.fields['position'].initial = employee.position
+    def __init__(self, instance=None, **kwargs):
+        self.employee = instance
+        if self.employee:
+            super().__init__(self.employee.user, **kwargs)
+            self.fields['position'].initial = self.employee.position
         else:
             super().__init__(**kwargs)
 
@@ -108,3 +110,12 @@ class EmployeeForm(UserCreationForm):
             self.employee.position = self.cleaned_data['position']
             self.employee.save()
             return self.employee
+
+    class Meta:
+        model = Employee
+
+
+class PositionForm(forms.ModelForm):
+    class Meta:
+        model = Position
+        fields = '__all__'

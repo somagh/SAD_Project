@@ -23,6 +23,8 @@ class Student(models.Model):
     def username(self):
         return self.user.username
 
+    class Meta:
+        verbose_name = 'دانشجو'
 
 class Employee(models.Model):
     user = models.OneToOneField(to=User)
@@ -44,12 +46,17 @@ class Employee(models.Model):
     def username(self):
         return self.user.username
 
+    class Meta:
+        verbose_name = 'کارمند دون‌پایه'
 
 class Position(models.Model):
     name = models.CharField(max_length=40, verbose_name='نام')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'سمت'
 
 
 class Process(models.Model):
@@ -58,6 +65,9 @@ class Process(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'فرایند'
 
 
 class Step(models.Model):
@@ -72,3 +82,6 @@ class Step(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'گام'
