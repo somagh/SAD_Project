@@ -62,8 +62,8 @@ class Position(models.Model):
 
 
 class Process(models.Model):
-    name = models.CharField(max_length=100)
-    first_step = models.ForeignKey(to='Step', related_name='+')
+    name = models.CharField(max_length=100,verbose_name='نام')
+    first_step = models.ForeignKey(to='Step', related_name='+',verbose_name='گام اولیه',blank=True,null=True)
 
     def __str__(self):
         return self.name
@@ -73,14 +73,14 @@ class Process(models.Model):
 
 
 class Step(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    has_payment = models.BooleanField()
-    needs_clarification = models.BooleanField()
-    process = models.ForeignKey(to=Process, related_name='steps')
-    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
-    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+')
-    position = models.ForeignKey(to=Position, related_name='steps')
+    name = models.CharField(max_length=100, verbose_name='نام')
+    description = models.TextField(verbose_name='نام')
+    has_payment = models.BooleanField(verbose_name='امکان پرداخت')
+    needs_clarification = models.BooleanField(verbose_name='امکان درخواست توضیح')
+    process = models.ForeignKey(to=Process, related_name='steps',verbose_name='فرایند')
+    pass_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',verbose_name='گام بعدی در صورت موفقیت')
+    fail_step = models.ForeignKey(to='Step', null=True, blank=True, related_name='+',verbose_name='گام بعدی در صورت شکست')
+    position = models.ForeignKey(to=Position, related_name='steps',verbose_name='سمت مربوطه')
 
     def __str__(self):
         return self.name
