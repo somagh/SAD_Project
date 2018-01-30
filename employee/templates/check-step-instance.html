@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'employee_base.html' %}
 
 {% block title %} بررسی گام {% endblock %}
 
@@ -28,7 +28,6 @@
         <h4>عملیاتی وجود ندارد</h4>
     {% endfor %}
     </ol>
-
     <a class="btn btn-success" href="{% url 'employee:passfail-step-instance' step_instance.pk %}?type=accept">تایید</a>
 
     <a class="btn btn-danger" href="{% url 'employee:passfail-step-instance' step_instance.pk %}?type=reject">رد</a>
