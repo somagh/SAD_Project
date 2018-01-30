@@ -119,7 +119,7 @@ class PaymentRecommit(Action):
 
     @staticmethod
     def is_valid(step_instance):
-        return step_instance.has_payment
+        return step_instance.step.has_payment
 
 
 class ClarificationRecommit(Action):
@@ -132,7 +132,7 @@ class ClarificationRecommit(Action):
 
     @staticmethod
     def is_valid(step_instance):
-        return step_instance.needs_clarification
+        return step_instance.step.needs_clarification
 
 
 class PaymentAction(Action):

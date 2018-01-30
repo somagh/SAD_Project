@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} اعلام خطا در گام {% endblock %}
+
+{% block content %}
+    <h2>اطلاعات کلی</h2>
+
+    <ul>
+        <li>نام گام:
+            {{ step_instance.step.name }}
+        </li>
+        <li>توضیح گام:
+            {{ step_instance.step.description }}
+        </li>
+        <li>فرآیند:
+            {{ step_instance.process }}
+        </li>
+        <li>اطلاعات دانشجو:
+            {{ step_instance.student }}
+        </li>
+    </ul>
+
+    <form method="post">
+    {% csrf_token %}
+    {% if request.GET.recommit_type == "payment" %}
+        <input type="hidden" name="recommit_type" value="payment">
+        <label for="price">مبلغ</label>
+        <input type="number" name="price" id="price">
+        <br>
+        <label for="concern">بابت</label>
+        <textarea name="concern" id="concern"></textarea>
+    {% else %}
+        <input type="hidden" name="recommit_type" value="clarification">
+        <label for="message">پیغام</label>
+        <textarea name="message" id="message"></textarea>
+    {% endif %}
+    <button class="btn btn-success" type="submit" >ثبت</button>
+    <a class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">بازگشت</a>
+    </form>
+
+{% endblock %}

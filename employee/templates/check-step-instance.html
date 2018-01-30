@@ -34,12 +34,12 @@
     <a class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">رد</a>
 
     {% if step_instance.step.has_payment %}
-        <a class="btn btn-warning" href="{% url 'employee:check-step-instance' step_instance.pk %}">اعلام خطا با پرداخت</a>
+        <a class="btn btn-warning" href="{% url 'employee:recommit-step-instance' step_instance.pk %}?recommit_type=payment">اعلام خطا با پرداخت</a>
     {% endif %}
 
 
     {% if step_instance.step.needs_clarification %}
-        <a class="btn btn-warning" href="{% url 'employee:check-step-instance' step_instance.pk %}">اعلام خطا با درخواست توضیحات</a>
+        <a class="btn btn-warning" href="{% url 'employee:recommit-step-instance' step_instance.pk %}?recommit_type=clarification">اعلام خطا با درخواست توضیحات</a>
     {% endif %}
 
 {% endblock %}
