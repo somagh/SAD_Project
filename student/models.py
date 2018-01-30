@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db import transaction
 from enumfields.enums import Enum
 from enumfields.fields import EnumField
 from polymorphic.models import PolymorphicModel
@@ -20,6 +21,7 @@ class ProcessInstance(models.Model):
 
     @property
     def status(self):
+        print("sag", self.step_instances.last().name)
         return self.step_instances.last().status
 
     @property
@@ -136,11 +138,12 @@ class PassFailAction(Action):
 
     def save(self, **kwargs):
         if not self.pk:
-            super().save(**kwargs)
-            if self.status==Status.PASSED and self.step_instance.step.pass_step:
-                StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.pass_step)
-            if self.status==Status.FAILED and self.step_instance.step.fail_step:
-                StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.fail_step)
+            with transaction.atomic():
+                super().save(**kwargs)
+                if self.status==Status.PASSED and self.step_instance.step.pass_step:
+                    StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.pass_step)
+                if self.status==Status.FAILED and self.step_instance.step.fail_step:
+                    StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.fail_step)
         else:
             super().save(**kwargs)
 
