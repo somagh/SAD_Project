@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block nav-items %}
+    <li class="{% block show-active %}active{% endblock %}"><a href="{% url 'employee:show-responsibilities' %}">مشاهده وظایف</a></li>
+    <li class="{% block list-active %}{% endblock %}"><a href="{% url 'employee:report' %}">گزارش عملیات</a></li>
+{% endblock %}
