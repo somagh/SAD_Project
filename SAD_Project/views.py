@@ -9,7 +9,7 @@ class HomeView(LoginRequiredMixin, RedirectView):
         if user.is_superuser:
             url = 'admin:student-list'
         elif hasattr(user, 'student'):
-            url = ''
+            url = 'student:home'
         elif hasattr(user, 'employee'):
             url = 'employee:show-responsibilities'
         return reverse(url)

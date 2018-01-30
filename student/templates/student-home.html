@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load status_tags %}
+
+{% block title %} صفحه دانشجو
+{% endblock %}
+
+{% block content %}
+    <h3>{{ request.student.full_name  }} عزیز به سامانه خوش آمدید!</h3>
+    <h2>فرآیند‌های فارغ التحصیلی شما</h2>
+    {% if request.student.process_instances.all %}
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>نام</th>
+        <th>تاریخ شروع</th>
+        <th>وضعیت</th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for process_instance in request.student.process_instances.all %}
+            <tr>
+                <td>
+                    {{ process_instance.name }}
+                </td>
+                <td>
+                    {{ process_instance.start_date }}
+                </td>
+                <td>
+                    {% status_label process_instance.status %}
+                </td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'student:steps' process_instance.pk %}">مشاهده</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+شما در هیچ فرایند فارغ‌التحصیلی‌ای ثبت نشده‌اید.
+        <br/>
+        <br/>
+    {% endif %}
+
+    <a class="btn btn-success" href="{% url 'student:start-process' %}">شروع فرآیند جدید</a>
+{% endblock %}

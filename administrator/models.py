@@ -27,6 +27,10 @@ class Student(models.Model):
     def username(self):
         return self.user.username
 
+    @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
     class Meta:
         verbose_name = 'دانشجو'
 

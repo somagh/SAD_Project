@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} گام‌های فرایند {% endblock %}
+
+{% block content %}
+    <h2>گام‌های فرآیند</h2>
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>نام</th>
+        <th>تاریخ شروع</th>
+        <th>تاریخ آخرین عملیات</th>
+        <th>وضعیت</th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for step_instance in step_instances %}
+            <tr>
+                <td>
+                    {{ step_instance.name }}
+                </td>
+                <td>
+                    {{ step_instance.start_date }}
+                </td>
+                <td>
+                    {% if step_instance.end_date %}
+                        {{ step_instance.end_date }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+                <td>
+                    {% status_label step_instance.status %}
+                </td>
+                <td>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'student:home' %}" class="btn btn-danger">بازگشت</a>
+{% endblock %}

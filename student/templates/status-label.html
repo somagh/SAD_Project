@@ -1,0 +1,17 @@
+{% if pending %}
+    <h5 class="text-muted"><b>
+        منتظر تایید
+    </b></h5>
+{% elif has_error %}
+    <h5 class="text-warning"><b>
+        دارای خطا
+    </b></h5>
+{% elif passed %}
+    <h5 class="text-success"><b>
+        پذیرفته‌شده
+    </b></h5>
+{% elif failed %}
+    <h4 class="text-danger"><b>
+        ردشده
+    </b></h4>
+{% endif %}

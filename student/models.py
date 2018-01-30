@@ -16,7 +16,19 @@ class Status(Enum):
 
 class ProcessInstance(models.Model):
     process = models.ForeignKey(to=Process, verbose_name='فرایند')
-    student = models.ForeignKey(to=Student)
+    student = models.ForeignKey(to=Student, related_name='process_instances')
+
+    @property
+    def status(self):
+        return self.step_instances.first().status
+
+    @property
+    def start_date(self):
+        return self.step_instances.first().start_date
+
+    @property
+    def name(self):
+        return self.process.name
 
     def clean(self):
         if not self.process.first_step:
@@ -29,11 +41,18 @@ class ProcessInstance(models.Model):
         else:
             super().save(**kwargs)
 
+    class Meta:
+        ordering = ('-pk',)
+
 
 class StepInstance(models.Model):
     process_instance = models.ForeignKey(to=ProcessInstance, related_name='step_instances')
     step = models.ForeignKey(to=Step)
     start_date = models.DateField(auto_now_add=True)
+
+    @property
+    def name(self):
+        return self.step.name
 
     @property
     def process(self):

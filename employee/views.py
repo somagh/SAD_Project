@@ -1,6 +1,5 @@
 from django.shortcuts import redirect
-from django.views.generic import ListView, FormView
-from django.views.generic.base import TemplateView
+from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
 from SAD_Project.mixins import EmployeeRequiredMixin

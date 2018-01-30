@@ -8,6 +8,6 @@
         {% csrf_token %}
     {{ form.as_p }}
     <button class="btn btn-success">شروع</button>
-    <a href="{{ back_url }}" class="btn btn-danger"> بازگشت</a>
+    <a href="{% url 'student:home' %}" class="btn btn-danger"> بازگشت</a>
     </form>
 {% endblock %}
