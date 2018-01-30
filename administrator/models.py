@@ -4,6 +4,14 @@ from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
 
 
+class PaymentTransaction:
+    def __init__(self, price, pursuit, date, concern):
+        self.price = price
+        self.pursuit = pursuit
+        self.date = date
+        self.concern = concern
+
+
 class Student(models.Model):
     user = models.OneToOneField(to=User, on_delete=CASCADE)
     studentID = models.CharField(max_length=12, primary_key=True)
@@ -30,6 +38,12 @@ class Student(models.Model):
     @property
     def full_name(self):
         return self.first_name + ' ' + self.last_name
+
+    def get_payment_transactions(self):
+        transactions = []
+        for process_instance in self.process_instances.all():
+            transactions += process_instance.get_payment_transactions()
+        return transactions
 
     class Meta:
         verbose_name = 'دانشجو'

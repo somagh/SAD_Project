@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load status_tags %}
+
+{% block title %} تراکنش‌های مالی
+{% endblock %}
+
+{% block content %}
+    <h2>تراکنش‌های مالی شما</h2>
+    {% if transactions %}
+    <table class="table table-hover table-striped">
+        <thead>
+        <th>تاریخ</th>
+        <th>مبلغ</th>
+        <th>بابت</th>
+        <th>کد رهگیری</th>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>
+                    {{ transaction.date }}
+                </td>
+                <td>
+                    {{ transaction.price }}
+                </td>
+                <td>
+                    {{ transaction.concern }}
+                </td>
+                <td>
+                    {{ transaction.pursuit }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+شما تاکنون تراکنش مالی نداشته‌اید.
+        <br/>
+        <br/>
+    {% endif %}
+
+    <a class="btn btn-success" href="{% url 'student:home' %}">بازگشت</a>
+{% endblock %}

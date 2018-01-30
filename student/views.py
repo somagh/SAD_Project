@@ -89,3 +89,11 @@ class ClarificationActionView(StudentRequiredMixin, DetailView):
             ClarificationAction.objects.create(response=request.POST['response'],
                                                step_instance=action.step_instance)
         return redirect(reverse('student:steps', args=[action.step_instance.process_instance.pk]))
+
+
+class PaymentTransactionsView(StudentRequiredMixin, ListView):
+    template_name = 'payment-transactions.html'
+    context_object_name = 'transactions'
+
+    def get_queryset(self):
+        return self.request.student.get_payment_transactions()

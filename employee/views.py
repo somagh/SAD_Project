@@ -76,9 +76,9 @@ class EmployeeReportView(EmployeeRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        payment_recommits = PaymentRecommit.objects.filter(employee=self)
-        clarification_recommits = ClarificationRecommit.objects.filter(employee=self)
-        pass_fail_actions = PassFailAction.objects.filter(employee=self)
+        payment_recommits = PaymentRecommit.objects.filter(employee=self.request.employee)
+        clarification_recommits = ClarificationRecommit.objects.filter(employee=self.request.employee)
+        pass_fail_actions = PassFailAction.objects.filter(employee=self.request.employee)
         context['action_set'] = [
             {'title': 'خطا‌های پرداختی', 'actions': payment_recommits},
             {'title': 'خطاهای نیازمند توضیح', 'actions': clarification_recommits},

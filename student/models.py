@@ -5,7 +5,7 @@ from enumfields.enums import Enum
 from enumfields.fields import EnumField
 from polymorphic.models import PolymorphicModel
 
-from administrator.models import Step, Process, Student, Employee
+from administrator.models import Step, Process, Student, Employee, PaymentTransaction
 
 
 class Status(Enum):
@@ -34,6 +34,12 @@ class ProcessInstance(models.Model):
     def clean(self):
         if not self.process.first_step:
             raise ValidationError('Process has no first step')
+
+    def get_payment_transactions(self):
+        transactions = []
+        for step_instance in self.step_instances.all():
+            transactions += step_instance.get_payment_transactions()
+        return transactions
 
     def save(self, **kwargs):
         if not self.pk:
@@ -93,6 +99,17 @@ class StepInstance(models.Model):
     def has_clarification_recommit(self):
         return isinstance(self.last_action, ClarificationRecommit)
 
+    def get_payment_transactions(self):
+        transactions = []
+        actions = self.actions.all()
+        for i in range(len(actions) - 1):
+            next = actions[i+1]
+            prev = actions[i]
+            if next.is_paid_payment_action:
+                transactions.append(PaymentTransaction(price=prev.price, concern=prev.concern,
+                                                       pursuit=next.pursuit, date=next.date))
+        return transactions
+
     def check_action_validation(self, employee, action_class):
         if employee:
             if self.position != employee.position or self.status != Status.PENDING:
@@ -113,6 +130,10 @@ class StepInstance(models.Model):
 class Action(PolymorphicModel):
     step_instance = models.ForeignKey(to=StepInstance, related_name='actions')
     date = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_paid_payment_action(self):
+        return False
 
     @property
     def is_student_action(self):
@@ -196,6 +217,10 @@ class ClarificationRecommit(Action):
 
 class PaymentAction(Action):
     pursuit = models.CharField(max_length=100)
+
+    @property
+    def is_paid_payment_action(self):
+        return True
 
     @property
     def details(self):

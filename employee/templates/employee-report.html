@@ -2,16 +2,22 @@
 
 {% block title %} استعلام گزارش {% endblock %}
 
+{% block show-active %}
+{% endblock %}
+
+{% block list-active %}
+    active
+{% endblock %}
+
 {% block content %}
     <h2>استعلام گزارش </h2>
-
+    <h4>در اینجا گزارشی از عملکرد خود را در سامانه میبینید</h4>
     {% for dict in action_set %}
     <h3> {{ dict.title }} </h3>
     <table class="table table-hover table-striped">
         <thead>
         <th>تاریخ</th>
         <th>وضعیت</th>
-        <th>توسط</th>
         <th>جزییات</th>
         </thead>
         <tbody>
@@ -22,15 +28,6 @@
                 </td>
                 <td>
                     {% status_label action.status %}
-                </td>
-                <td>
-                    {% if action.is_student_action %}
-دانشجو
-                        {% elif action.employee == request.employee %}
-                            شما
-                    {% else %}
-                        {{ action.employee.full_name }}
-                    {% endif %}
                 </td>
                 <td>
                     {{ action.details }}

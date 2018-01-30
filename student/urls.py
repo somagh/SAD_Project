@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
 from student.views import ProcessInstanceCreateView, HomeView, ShowStepsView, ShowActionsView, \
-    PaymentActionView, ClarificationActionView
+    PaymentActionView, ClarificationActionView, PaymentTransactionsView
 
 step_instance_urlpatterns = [
     url(r'^$', ShowActionsView.as_view(), name='actions'),
@@ -11,6 +11,7 @@ step_instance_urlpatterns = [
 
 urlpatterns = [
     url(r'^home/', HomeView.as_view(), name='home'),
+    url(r'^transactions/', PaymentTransactionsView.as_view(), name='transactions'),
     url(r'^start-process/', ProcessInstanceCreateView.as_view(), name='start-process'),
     url(r'^(?P<process_instance_pk>\d+)/steps/$', ShowStepsView.as_view(), name='steps'),
     url(r'^(?P<process_instance_pk>\d+)/steps/(?P<pk>\d+)/', include(step_instance_urlpatterns)),
