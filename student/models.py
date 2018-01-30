@@ -21,7 +21,6 @@ class ProcessInstance(models.Model):
 
     @property
     def status(self):
-        print("sag", self.step_instances.last().name)
         return self.step_instances.last().status
 
     @property
