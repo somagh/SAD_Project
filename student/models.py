@@ -95,8 +95,12 @@ class StepInstance(models.Model):
         return isinstance(self.last_action, ClarificationRecommit)
 
     def check_action_validation(self, employee, action_class):
-        if self.position != employee.position or self.status != Status.PENDING:
-            return False
+        if employee:
+            if self.position != employee.position or self.status != Status.PENDING:
+                return False
+        else:
+            if self.status != Status.HAS_ERROR:
+                return False
         return action_class.is_valid(self)
 
     def clean(self):
@@ -114,6 +118,10 @@ class Action(PolymorphicModel):
     @property
     def is_student_action(self):
         return not hasattr(self, 'employee')
+
+    @property
+    def details(self):
+        return '--'
 
     class Meta:
         ordering = ('date',)
@@ -154,6 +162,13 @@ class PaymentRecommit(Action):
     concern = models.TextField()
 
     @property
+    def details(self):
+        price_label = 'مبلغ'
+        concern_label = 'باید بابت'
+        end_label = 'پرداخت شود.'
+        return '{} {} {} {} {}'.format(price_label, self.price, concern_label, self.concern, end_label)
+
+    @property
     def status(self):
         return Status.HAS_ERROR
 
@@ -165,6 +180,11 @@ class PaymentRecommit(Action):
 class ClarificationRecommit(Action):
     employee = models.ForeignKey(to=Employee)
     message = models.TextField()
+
+    @property
+    def details(self):
+        label = 'خطایی با این مضمون به وجود آمد: '
+        return '{} {}'.format(label, self.message)
 
     @property
     def status(self):
@@ -179,6 +199,11 @@ class PaymentAction(Action):
     pursuit = models.CharField(max_length=100)
 
     @property
+    def details(self):
+        label = 'مبلغ مدنظر پرداخت شد؛ کد رهگیری: '
+        return '{} {}'.format(label, self.pursuit)
+
+    @property
     def status(self):
         return Status.PENDING
 
@@ -189,6 +214,11 @@ class PaymentAction(Action):
 
 class ClarificationAction(Action):
     response = models.TextField()
+
+    @property
+    def details(self):
+        label = 'مستندات ارائه‌شده توسط دانشجو: '
+        return '{} {}'.format(label, self.response)
 
     @property
     def status(self):

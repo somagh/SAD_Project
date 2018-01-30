@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} ادای توضیحات {% endblock %}
+
+{% block content %}
+    <h3>جزییات خطا</h3>
+    <h4>{{ action.step_instance.name }}</h4>
+    <h5>
+        خطایی با این مضمون به وجود آمده‌است:
+        {{ action.message }}
+    </h5>
+    <form method="post">
+        {% csrf_token %}
+        <label for="response">پاسخ شما:</label>
+        <textarea name="response" id="response"></textarea>
+        <br>
+        <button type="submit" class="btn btn-success">ثبت</button>
+        <a class="btn btn-danger" href="{% url 'student:steps' action.step_instance.process_instance.pk %}">بازگشت</a>
+    </form>
+{% endblock %}

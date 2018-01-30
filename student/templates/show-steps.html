@@ -36,10 +36,10 @@
                     <a class="btn btn-info" href="{% url 'student:actions' step_instance.process_instance.pk step_instance.pk %}">مشاهده جزییات</a>
                     {% endif %}
                     {% if step_instance.has_payment_recommit %}
-                        <a class="btn btn-warning">برطرف کردن خطا</a>
+                        <a href="{% url 'student:payment-action' step_instance.process_instance.pk step_instance.pk %}" class="btn btn-warning">برطرف کردن خطا</a>
                     {% endif %}
                     {% if step_instance.has_clarification_recommit %}
-                        <a class="btn btn-warning">برطرف کردن خطا</a>
+                        <a href="{% url 'student:clarification-action' step_instance.process_instance.pk step_instance.pk %}" class="btn btn-warning">برطرف کردن خطا</a>
                     {% endif %}
                 </td>
             </tr>
