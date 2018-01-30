@@ -29,9 +29,9 @@
     {% endfor %}
     </ol>
 
-    <a class="btn btn-success" href="{% url 'employee:check-step-instance' step_instance.pk %}">تایید</a>
+    <a class="btn btn-success" href="{% url 'employee:passfail-step-instance' step_instance.pk %}?type=accept">تایید</a>
 
-    <a class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">رد</a>
+    <a class="btn btn-danger" href="{% url 'employee:passfail-step-instance' step_instance.pk %}?type=reject">رد</a>
 
     {% if step_instance.step.has_payment %}
         <a class="btn btn-warning" href="{% url 'employee:recommit-step-instance' step_instance.pk %}?recommit_type=payment">اعلام خطا با پرداخت</a>

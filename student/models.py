@@ -107,6 +107,16 @@ class PassFailAction(Action):
     def is_valid(step_instance):
         return True
 
+    def save(self, **kwargs):
+        if not self.pk:
+            super().save(**kwargs)
+            if self.status==Status.PASSED and self.step_instance.step.pass_step:
+                StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.pass_step)
+            if self.status==Status.FAILED and self.step_instance.step.fail_step:
+                StepInstance.objects.create(process_instance=self.step_instance.process_instance, step=self.step_instance.step.fail_step)
+        else:
+            super().save(**kwargs)
+
 
 class PaymentRecommit(Action):
     employee = models.ForeignKey(to=Employee)
