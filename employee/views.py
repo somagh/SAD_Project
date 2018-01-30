@@ -1,9 +1,14 @@
 from django.shortcuts import redirect
+from django.views.generic import ListView, FormView
+from django.views.generic.base import TemplateView
+from django.views import View
 from django.views.generic import ListView
+from django.views.generic import RedirectView
 from django.views.generic.detail import DetailView
 
 from SAD_Project.mixins import EmployeeRequiredMixin
 from student.models import StepInstance, Status, PaymentRecommit, ClarificationRecommit
+from student.models import StepInstance, Status, PassFailAction
 
 
 class ShowResponsibilitiesView(EmployeeRequiredMixin, ListView):
@@ -54,3 +59,17 @@ class RecommitStepInstanceView(EmployeeRequiredMixin, DetailView):
                                                      employee=request.employee,
                                                      message=request.POST['message'])
         return redirect('employee:show-responsibilities')
+
+class PassFailActionCreateView(EmployeeRequiredMixin, DetailView):
+    model = StepInstance
+    context_object_name = 'step_instance'
+
+    def get(self, request, *args, **kwargs):
+        step_instance=self.get_object()
+        if step_instance.check_action_validation(request.employee,PassFailAction):
+            PassFailAction.objects.create(step_instance=step_instance,employee=request.employee,status=Status.PASSED if request.GET['type']=='accept' else Status.FAILED)
+        return redirect('employee:show-responsibilities')
+
+
+
+
