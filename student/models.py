@@ -48,7 +48,7 @@ class ProcessInstance(models.Model):
 class StepInstance(models.Model):
     process_instance = models.ForeignKey(to=ProcessInstance, related_name='step_instances')
     step = models.ForeignKey(to=Step)
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateTimeField(auto_now_add=True)
 
     @property
     def name(self):
@@ -84,6 +84,14 @@ class StepInstance(models.Model):
         else:
             return Status.PENDING
 
+    @property
+    def has_payment_recommit(self):
+        return isinstance(self.last_action, PaymentRecommit)
+
+    @property
+    def has_clarification_recommit(self):
+        return isinstance(self.last_action, ClarificationRecommit)
+
     def check_action_validation(self, employee, action_class):
         if self.position != employee.position or self.status != Status.PENDING:
             return False
@@ -99,7 +107,7 @@ class StepInstance(models.Model):
 
 class Action(PolymorphicModel):
     step_instance = models.ForeignKey(to=StepInstance, related_name='actions')
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     @property
     def is_student_action(self):

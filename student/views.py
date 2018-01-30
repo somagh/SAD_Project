@@ -1,11 +1,9 @@
 from django.urls.base import reverse_lazy
 from django.views.generic import FormView, TemplateView
-from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from SAD_Project.mixins import StudentRequiredMixin
 from student.forms import ProcessInstanceForm
-from student.models import StepInstance
 
 
 class ProcessInstanceCreateView(StudentRequiredMixin, FormView):
@@ -30,3 +28,13 @@ class ShowStepsView(StudentRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.request.student.process_instances.get(pk=int(self.kwargs['process_instance_pk'])).step_instances.all()
+
+
+class ShowActionsView(StudentRequiredMixin, ListView):
+    template_name = 'show-actions.html'
+    context_object_name = 'actions'
+
+    def get_queryset(self):
+        return self.request.student.process_instances.get(
+            pk=int(self.kwargs['process_instance_pk'])).step_instances.get(
+            pk=int(self.kwargs['pk'])).actions.all()
