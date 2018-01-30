@@ -20,7 +20,7 @@ class ProcessInstance(models.Model):
 
     @property
     def status(self):
-        return self.step_instances.first().status
+        return self.step_instances.last().status
 
     @property
     def start_date(self):
