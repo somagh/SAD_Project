@@ -111,7 +111,7 @@ class Action(PolymorphicModel):
 
     @property
     def is_student_action(self):
-        return hasattr(self, 'employee')
+        return not hasattr(self, 'employee')
 
     class Meta:
         ordering = ('date',)

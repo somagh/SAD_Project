@@ -1,48 +1,38 @@
 {% extends 'base.html' %}
 
-{% block title %} گام‌های فرایند {% endblock %}
+{% block title %} تاریخچه عملیات {% endblock %}
 
 {% block content %}
-    <h2>گام‌های فرآیند</h2>
+    <h2>تاریخچه عملیات</h2>
     <table class="table table-hover table-striped">
         <thead>
-        <th>نام</th>
-        <th>تاریخ شروع</th>
-        <th>تاریخ پایان</th>
+        <th>تاریخ</th>
         <th>وضعیت</th>
-        <th></th>
+        <th>توسط</th>
+        <th>جزییات</th>
         </thead>
         <tbody>
-        {% for step_instance in step_instances %}
+        {% for action in actions %}
             <tr>
                 <td>
-                    {{ step_instance.name }}
+                    {{ action.date }}
                 </td>
                 <td>
-                    {{ step_instance.start_date }}
+                    {% status_label action.status %}
                 </td>
                 <td>
-                    {% if step_instance.end_date %}
-                        {{ step_instance.end_date }}
+                    {% if action.is_student_action %}
+                        شما
                     {% else %}
-                        --
+                        {{ action.employee.full_name }}
                     {% endif %}
                 </td>
                 <td>
-                    {% status_label step_instance.status %}
-                </td>
-                <td>
-                    <a class="btn btn-info" href="{% url 'student:actions' step_instance.process_instance.pk step_instance.pk %}">مشاهده جزییات</a>
-                    {% if step_instance.has_payment_recommit %}
-                        <a class="btn btn-warning">برطرف کردن خطا</a>
-                    {% endif %}
-                    {% if step_instance.has_clarification_recommit %}
-                        <a class="btn btn-warning">برطرف کردن خطا</a>
-                    {% endif %}
+
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'student:home' %}" class="btn btn-danger">بازگشت</a>
+    <a href="{% url 'student:steps' actions.first.step_instance.process_instance.pk %}" class="btn btn-danger">بازگشت</a>
 {% endblock %}

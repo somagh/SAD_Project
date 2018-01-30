@@ -32,7 +32,9 @@
                     {% status_label step_instance.status %}
                 </td>
                 <td>
-                    <a class="btn btn-info">مشاهده جزییات</a>
+                    {% if step_instance.actions.count > 0 %}
+                    <a class="btn btn-info" href="{% url 'student:actions' step_instance.process_instance.pk step_instance.pk %}">مشاهده جزییات</a>
+                    {% endif %}
                     {% if step_instance.has_payment_recommit %}
                         <a class="btn btn-warning">برطرف کردن خطا</a>
                     {% endif %}

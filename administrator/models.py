@@ -55,6 +55,10 @@ class Employee(models.Model):
     def username(self):
         return self.user.username
 
+    @property
+    def full_name(self):
+        return self.first_name + ' ' + self.last_name
+
     def get_related_step_instances(self):
         from student.models import StepInstance, Status
 
