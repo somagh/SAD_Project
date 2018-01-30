@@ -65,9 +65,17 @@ class StepInstance(models.Model):
         else:
             return Status.PENDING
 
+    def check_action_validation(self, employee, action_class):
+        if self.position != employee.position or self.status != Status.PENDING:
+            return False
+        return action_class.is_valid(self)
+
     def clean(self):
         if self.process_instance.process != self.step.process:
             raise ValidationError('process_instance.process should be same as step.process')
+
+    class Meta:
+        ordering = ('start_date',)
 
 
 class Action(PolymorphicModel):
@@ -81,6 +89,10 @@ class Action(PolymorphicModel):
     class Meta:
         ordering = ('date',)
 
+    @staticmethod
+    def is_valid(step_instance):
+        return False
+
 
 class PassFailAction(Action):
     employee = models.ForeignKey(to=Employee)
@@ -90,6 +102,10 @@ class PassFailAction(Action):
         if self.status != Status.FAILED and self.status != Status.PASSED:
             raise ValidationError({'status': 'Invalid Status for PassFailAction, '
                                              'Choices are: FAILED and PASSED'})
+
+    @staticmethod
+    def is_valid(step_instance):
+        return True
 
 
 class PaymentRecommit(Action):
@@ -101,6 +117,10 @@ class PaymentRecommit(Action):
     def status(self):
         return Status.HAS_ERROR
 
+    @staticmethod
+    def is_valid(step_instance):
+        return step_instance.has_payment
+
 
 class ClarificationRecommit(Action):
     employee = models.ForeignKey(to=Employee)
@@ -110,6 +130,10 @@ class ClarificationRecommit(Action):
     def status(self):
         return Status.HAS_ERROR
 
+    @staticmethod
+    def is_valid(step_instance):
+        return step_instance.needs_clarification
+
 
 class PaymentAction(Action):
     pursuit = models.CharField(max_length=100)
@@ -118,6 +142,10 @@ class PaymentAction(Action):
     def status(self):
         return Status.PENDING
 
+    @staticmethod
+    def is_valid(step_instance):
+        return isinstance(step_instance.last_action, PaymentRecommit)
+
 
 class ClarificationAction(Action):
     response = models.TextField()
@@ -125,3 +153,7 @@ class ClarificationAction(Action):
     @property
     def status(self):
         return Status.PENDING
+
+    @staticmethod
+    def is_valid(step_instance):
+        return isinstance(step_instance.last_action, ClarificationRecommit)

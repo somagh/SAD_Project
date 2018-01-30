@@ -1,4 +1,5 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView
+from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 
 from SAD_Project.mixins import EmployeeRequiredMixin
@@ -21,6 +22,21 @@ class CheckStepInstanceView(EmployeeRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         step_instance = super().get_object(queryset=queryset)
         if step_instance.position != self.request.employee.position \
-                and step_instance.status == Status.PENDING:
+                or step_instance.status != Status.PENDING:
             raise PermissionError
         return step_instance
+
+
+class RecommitStepInstanceView(EmployeeRequiredMixin, DetailView):
+    model = StepInstance
+
+    def get_object(self, queryset=None):
+        step_instance = super().get_object(queryset=queryset)
+        if step_instance.position != self.request.employee.position \
+                or step_instance.status != Status.PENDING:
+            raise PermissionError
+        return step_instance
+
+    def post(self, request, *args, **kwargs):
+        step_instance = self.get_object()
+
