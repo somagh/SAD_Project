@@ -71,5 +71,17 @@ class PassFailActionCreateView(EmployeeRequiredMixin, DetailView):
         return redirect('employee:show-responsibilities')
 
 
+class EmployeeReportView(EmployeeRequiredMixin, TemplateView):
+    template_name = 'employee-report.html'
 
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        payment_recommits = PaymentRecommit.objects.filter(employee=self)
+        clarification_recommits = ClarificationRecommit.objects.filter(employee=self)
+        pass_fail_actions = PassFailAction.objects.filter(employee=self)
+        context['action_set'] = [
+            {'title': 'خطا‌های پرداختی', 'actions': payment_recommits},
+            {'title': 'خطاهای نیازمند توضیح', 'actions': clarification_recommits},
+            {'title': 'تاریخچه‌ی رد یا تایید', 'actions': pass_fail_actions},
+        ]
+        return context
