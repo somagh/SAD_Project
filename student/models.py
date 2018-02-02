@@ -150,6 +150,14 @@ class Action(PolymorphicModel):
     def is_valid(step_instance):
         return False
 
+    def save(self,**kwargs):
+        super().save()
+        self.notify()
+
+    def notify(self):
+        pass
+
+
 
 class PassFailAction(Action):
     employee = models.ForeignKey(to=Employee)
@@ -175,6 +183,23 @@ class PassFailAction(Action):
         else:
             super().save(**kwargs)
 
+    def notify(self):
+        if self.status==Status.PASSED:
+            if self.step_instance.step.pass_step is not None:
+                subject='پذیرش گام'
+                message='سلام {}،\nدر فرایند {}، گام {} شما  با موفقیت پذیرفته شد و حال به گام {} وارد شده اید.'.format(self.step_instance.student.full_name,self.step_instance.process_instance.name,self.step_instance.name,self.step_instance.step.pass_step.name)
+            else:
+                subject='پایان موفقیت آمیز فرایند'
+                message='سلام {}،\nبا پذیرش گام {}، فرایند {} با موفقیت به پایان رسید.'.format(self.step_instance.student.full_name,self.step_instance.name,self.step_instance.process_instance.name)
+        else:
+            if self.step_instance.step.fail_step is not None:
+                subject = 'رد گام'
+                message = 'سلام {}،\nدر فرایند {}، متاسفانه گام {} شما رد شد و حال به گام {} وارد شده اید.'.format(self.step_instance.student.full_name,self.step_instance.process_instance.name,self.step_instance.name,self.step_instance.step.fail_step.name)
+            else:
+                subject = 'پایان ناموفق فرایند'
+                message = 'سلام {}،\nبا رد گام {}، فرایند {} بدون موفقیت به پایان رسید.'.format(self.step_instance.student.full_name,self.step_instance.name,self.step_instance.process_instance.name)
+        self.step_instance.student.notify(subject,message)
+
 
 class PaymentRecommit(Action):
     employee = models.ForeignKey(to=Employee)
@@ -196,6 +221,11 @@ class PaymentRecommit(Action):
     def is_valid(step_instance):
         return step_instance.step.has_payment
 
+    def notify(self):
+        subject='نیاز به پرداخت وجه'
+        message='سلام {}،\nدر گام {} فرایند {}، باید مبلغ {} تومان بابت {} پرداخت کنید.'.format(self.step_instance.student.full_name,self.step_instance.name,self.step_instance.process_instance.name,self.price,self.concern)
+        self.step_instance.student.notify(subject,message)
+
 
 class ClarificationRecommit(Action):
     employee = models.ForeignKey(to=Employee)
@@ -213,6 +243,11 @@ class ClarificationRecommit(Action):
     @staticmethod
     def is_valid(step_instance):
         return step_instance.step.needs_clarification
+
+    def notify(self):
+        subject='نیاز به پرداخت وجه'
+        message='سلام {}،\nدر گام {} فرایند {}، خطایی با مضمون {} به وجود آمده است.'.format(self.step_instance.student.full_name,self.step_instance.name,self.step_instance.process_instance.name,self.message)
+        self.step_instance.student.notify(subject,message)
 
 
 class PaymentAction(Action):

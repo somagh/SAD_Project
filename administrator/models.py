@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE
@@ -44,6 +45,12 @@ class Student(models.Model):
         for process_instance in self.process_instances.all():
             transactions += process_instance.get_payment_transactions()
         return transactions
+
+    def notify(self,subject,message):
+        print(subject)
+        print(message)
+        #send_mail(subject, message, from_email="sad@project.com", recipient_list=[self.user.email],
+                  #fail_silently=False)
 
     class Meta:
         verbose_name = 'دانشجو'
