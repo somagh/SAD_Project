@@ -4,10 +4,24 @@
 
 {% block content %}
     <h2>{{ type }} {{ model_name }}</h2>
-    <form method="post">
-        {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-success">{{ type }}</button>
-    <a href="{{ back_url }}" class="btn btn-danger"> بازگشت</a>
+    <form method="post" class="form">
+        <div class="form-inner">
+            <div class="form-white-background">
+
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-row">
+                        <label>
+                            <span>{{ field.label }}</span>
+                            {{ field }}
+                        </label>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-success">{{ type }}</button>
+                <a href="{{ back_url }}">
+                <button class="btn btn-danger">بازگشت</button>
+                </a>
+            </div>
+        </div>
     </form>
 {% endblock %}

@@ -7,6 +7,7 @@ body {
   background: -webkit-linear-gradient(45deg, #1cc09d, #5fdc82);
   background: linear-gradient(45deg, #19a19d, #5bbc82);
   font-family: sans-serif;
+  overflow-y: scroll;
   font-weight: 100;
 }
 .container {
