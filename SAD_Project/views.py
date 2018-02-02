@@ -12,4 +12,6 @@ class HomeView(LoginRequiredMixin, RedirectView):
             url = 'student:home'
         elif hasattr(user, 'employee'):
             url = 'employee:show-responsibilities'
+        else:
+            url = 'login'
         return reverse(url)

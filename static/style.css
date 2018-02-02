@@ -5,3 +5,33 @@
     td{
       text-align: center;
     }
+
+    @font-face {
+      font-family: 'iranian sans';
+
+        src: url('bootstrap/fonts/X Jalal.ttf');
+
+    }
+
+
+    @font-face {
+      font-family: 'iranian sans';
+
+        src: url('bootstrap/fonts/X Jalal Bold.ttf');
+        font-weight: bold;
+    }
+
+h2 {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    margin-top: 20px !important;
+    padding-bottom: 30px;
+    margin-bottom: 100px;
+    font-size: 50px;
+    border-bottom: 2px solid white;
+}
+
+* {
+    font-family: 'iranian sans';
+   }
