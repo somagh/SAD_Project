@@ -15,6 +15,6 @@
         <textarea name="response" id="response"></textarea>
         <br>
         <button type="submit" class="btn btn-success">ثبت</button>
-        <a class="btn btn-danger" href="{% url 'student:steps' action.step_instance.process_instance.pk %}">بازگشت</a>
+        <a type="button" class="btn btn-danger" href="{% url 'student:steps' action.step_instance.process_instance.pk %}">بازگشت</a>
     </form>
 {% endblock %}

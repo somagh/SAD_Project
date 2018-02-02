@@ -36,7 +36,7 @@
     {% endif %}
         <br>
     <button class="btn btn-success" type="submit" >ثبت</button>
-    <a class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">بازگشت</a>
+    <a type="button" class="btn btn-danger" href="{% url 'employee:check-step-instance' step_instance.pk %}">بازگشت</a>
     </form>
 
 {% endblock %}
