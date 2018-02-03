@@ -245,7 +245,7 @@ class ClarificationRecommit(Action):
         return step_instance.step.needs_clarification
 
     def notify(self):
-        subject='نیاز به پرداخت وجه'
+        subject='نیاز به ادای توضیحات'
         message='سلام {}،\nدر گام {} فرایند {}، خطایی با مضمون {} به وجود آمده است.'.format(self.step_instance.student.full_name,self.step_instance.name,self.step_instance.process_instance.name,self.message)
         self.step_instance.student.notify(subject,message)
 

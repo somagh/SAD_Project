@@ -49,8 +49,8 @@ class Student(models.Model):
     def notify(self,subject,message):
         print(subject)
         print(message)
-        #send_mail(subject, message, from_email="sad@project.com", recipient_list=[self.user.email],
-                  #fail_silently=False)
+        send_mail(subject, message, from_email="sad@project.com", recipient_list=[self.user.email],
+                  fail_silently=False)
 
     class Meta:
         verbose_name = 'دانشجو'

@@ -60,6 +60,7 @@ class RecommitStepInstanceView(EmployeeRequiredMixin, DetailView):
                                                      message=request.POST['message'])
         return redirect('employee:show-responsibilities')
 
+
 class PassFailActionCreateView(EmployeeRequiredMixin, DetailView):
     model = StepInstance
     context_object_name = 'step_instance'
