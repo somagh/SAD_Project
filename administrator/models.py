@@ -50,7 +50,7 @@ class Student(models.Model):
         print(subject)
         print(message)
         send_mail(subject, message, from_email="sad@project.com", recipient_list=[self.user.email],
-                  fail_silently=False)
+                  fail_silently=True)
 
     class Meta:
         verbose_name = 'دانشجو'
